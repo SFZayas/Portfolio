@@ -127,7 +127,7 @@ function generateCV() {
   
   // Add Title
   doc.setFontSize(22);
-  doc.text("Curriculum Vitae", 10, 10);
+  doc.text("Resume", 10, 10);
   
   // Add Name
   doc.setFontSize(18);
@@ -166,7 +166,7 @@ function generateCV() {
   doc.text("Education:", 10, 230);
   doc.setFontSize(12);
   doc.text("Baccalaureate Degree (2019 - 2023)", 10, 240);
-  doc.text("Details: Lorem ipsum dolor sit amet...", 10, 250);
+  doc.text("Details: ", 10, 250);
   
   // Add Experience
   doc.setFontSize(14);
@@ -176,5 +176,90 @@ function generateCV() {
   doc.text("Details: Lorem ipsum dolor sit amet...", 10, 290);
   
   // Save the PDF
-  doc.save('cv-sylwyn-franz-zayas.pdf');
+  doc.save('Zayas-Resume.pdf');
 }
+
+/* =================================== Send Email =================================== */
+const alertMessage = "Email Sent Successfully!";
+
+// Function to call the custom alert
+function callAlert(message) {
+    customAlert(message, 3000); // Call the custom alert with the message and timeout
+}
+
+// Custom alert function
+function customAlert(message, timeout = null) {
+    const alertDiv = document.createElement('div');
+    const alertButton = document.createElement('button'); // Correct element creation
+    alertButton.innerText = 'OK';
+
+    // Add styles to the alert box
+    alertDiv.classList.add('custom-alert');
+    alertDiv.setAttribute('style',
+        `
+        position: fixed;
+        top: 100px;
+        left: 50%;
+        padding: 20px;
+        border-radius: 10px; /* Fix the CSS property */
+        box-shadow: 0 10px 5px 0 #00000022;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #333;
+        transform: translateX(-50%);
+        background: #f8f8f8; /* Add a background color for better visibility */
+        z-index: 1000; /* Ensure the alert is on top of other content */
+        `
+    );
+    alertButton.setAttribute('style',`
+        border: 1px solid #333;
+        background: white;
+        border-radius: 5px;
+        padding: 5px;
+        cursor: pointer; /* Make it clear it's clickable */
+    `);
+    alertDiv.innerHTML = `<span style="padding: 10px">${message}</span>`; // Use the correct variable name
+    alertDiv.appendChild(alertButton);
+    alertButton.addEventListener("click", () => {
+        alertDiv.remove();
+    });
+
+    // Automatically remove the alert after the specified timeout
+    if (timeout != null) {
+        setTimeout(() => {
+            alertDiv.remove();
+        }, Number(timeout));
+    }
+    document.body.appendChild(alertDiv);
+}
+
+// Handle form submission
+const emailName = document.getElementById("name"),
+      emailFrom = document.getElementById("email"),
+      emailSubj = document.getElementById("subject"),
+      emailBody = document.getElementById("message"),
+      sendEmail = document.querySelector("button.btn");
+
+sendEmail.addEventListener("click", function(e) {
+    e.preventDefault();
+
+    let ebody = `
+        <b>Name: </b>${emailName.value}
+        <br>
+        <b>Email: </b>${emailFrom.value}
+        <br>
+        <p>${emailBody.value}</p>
+    `;
+
+    Email.send({
+        SecureToken: "7eb6c649-7778-4cea-bfc4-bc4afd94bc71",
+        To: 'sylwynfranz.zayas@gmail.com',
+        From: 'sylwynfranz.zayas@gmail.com',
+        Subject: emailSubj.value,
+        Body: ebody
+    }).then(() => {
+        callAlert(alertMessage);  // Call the custom alert with the success message
+    }).catch((error) => {
+        callAlert("Failed to send email. Please try again."); // Handle errors
+    });
+});

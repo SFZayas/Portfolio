@@ -149,6 +149,7 @@ section.home
     white-space: nowrap;
     border: none;
     background: var(--skin-color);
+    cursor: pointer;
     transition: all 0.3s ease;
 }
 .btn:hover
@@ -589,6 +590,7 @@ h3.my-profession
     border-radius: 10px;
     padding: 30px 15px;
     text-align: center;
+    aspect-ratio: 2;
     transition: all 0.3s ease;
 }
 .service .service-item .service-item-inner:hover
@@ -668,6 +670,7 @@ h3.my-profession
 {
     width: 100%;
     object-fit: cover;
+    aspect-ratio: 1.5;
     display: block;
     transition: all 0.3 ease;
 }
